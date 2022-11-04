@@ -1,0 +1,167 @@
+.paper_container {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  /* background-color: grey; */
+}
+
+#topBar {
+  width: 100%;
+  height: 6.5vh;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  border-bottom: 2px solid black;
+}
+
+#logo_container {
+  width: 15%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* background-color: pink; */
+}
+
+#title {
+  width: 55%;
+  height: 100%;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  /* background-color: grey; */
+}
+
+#participants_container {
+  width: 30%;
+  height: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  padding-right: 5%;
+
+  /* background-color: orange; */
+}
+
+#colorPicker {
+  width: 40%;
+  height: 5vh;
+
+  position: fixed;
+
+  top: 8vh;
+  left: 58vw;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  border: 2px solid black;
+}
+
+#colorPicker button {
+  width: 10%;
+  height: 80%;
+}
+
+#white {
+  background-color: white;
+}
+
+#black {
+  background-color: black;
+}
+
+#blue {
+  background-color: blue;
+}
+
+#red {
+  background-color: red;
+}
+
+#green {
+  background-color: green;
+}
+
+#yellow {
+  background-color: yellow;
+}
+
+#purple {
+  background-color: purple;
+}
+
+#pink {
+  background-color: pink;
+}
+
+#grey {
+  background-color: grey;
+}
+
+#sideFunctions {
+  width: 40%;
+  height: 5vh;
+
+  position: fixed;
+
+  top: 8vh;
+  left: 2vw;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  border: 2px solid black;
+}
+
+#toolBar {
+  width: 5vw;
+  height: 65vh;
+
+  position: fixed;
+
+  top: 20vh;
+  left: 2vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  border: 2px solid black;
+}
+
+#canvasContainer {
+  width: 88.5vw;
+  height: 80vh;
+
+  position: fixed;
+
+  top: 16vh;
+  left: 10vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  border: 2px solid black;
+
+  background-color: grey;
+}
