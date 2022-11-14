@@ -46,7 +46,6 @@ const ColorPicker = ({color, setColor}) => {
 };
 
 const Index = () => {
-
     const WIDTH = window.innerWidth;
     const HEIGHT = window.innerHeight;
     const [strokeWidth, setStrokeWidth] = useState(2);
