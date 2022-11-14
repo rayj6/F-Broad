@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Stage, Layer, Line, Text } from "react-konva";
+import React, { useState } from "react";
+import { Stage, Layer, Line } from "react-konva";
 
 import "./styles.css";
 
@@ -129,7 +129,7 @@ const index = () => {
                 key={i}
                 points={line.points}
                 stroke={color}
-                strokeWidth={5}
+                strokeWidth={strokeWidth}
                 tension={0.5}
                 lineCap="round"
                 lineJoin="round"
