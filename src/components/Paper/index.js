@@ -3,6 +3,8 @@ import { Stage, Layer, Line, Text } from "react-konva";
 
 import "./styles.css";
 
+const dbRef = ref(Database, "board");
+
 const ColorPicker = ({ color, setColor }) => {
   return (
     <div id="colorPicker">
