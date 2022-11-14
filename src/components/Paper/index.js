@@ -48,9 +48,8 @@ const ColorPicker = ({ color, setColor }) => {
 const index = () => {
   const [color, setColor] = useState("black");
   const [strokeWidth, setStrokeWidth] = useState(2);
-
-  const WIDTH = window.innerWidth;
-  const HEIGHT = window.innerHeight;
+  const [isdraggable, setDraggable] = useState(false);
+  // const [drawEnable, setDrawEnable] = useState(true);
 
   const [tool, setTool] = React.useState("pen");
   const [lines, setLines] = React.useState([]);
@@ -109,7 +108,9 @@ const index = () => {
       <div id="toolBar">
         <button id="draw">Draw</button>
         <button id="Rubber">Rubber</button>
-        <button id="Cursor">Cursor</button>
+        <button id="Cursor" onClick={() => [setDraggable(true)]}>
+          Cursor
+        </button>
         <button id="Note">Note</button>
         <button id="Image">Image</button>
         <button id="Text">Text</button>
@@ -133,6 +134,7 @@ const index = () => {
                 tension={0.5}
                 lineCap="round"
                 lineJoin="round"
+                draggable={isdraggable}
                 globalCompositeOperation={
                   line.tool === "eraser" ? "destination-out" : "source-over"
                 }
