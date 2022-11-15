@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { Stage, Layer, Line, Transformer } from "react-konva";
-import { onValue, update, ref, remove, onChildAdded } from "firebase/database";
+import { onChildAdded, update, ref, remove, push, get } from "firebase/database";
 import { Database } from "../../firebase.config";
 
 import "./styles.css";
@@ -47,105 +47,119 @@ const ColorPicker = ({color, setColor}) => {
     );
 };
 
-const Index = () => {
-    const refDB = ref(Database, "/board/")
-    const WIDTH = window.innerWidth;
-    const HEIGHT = window.innerHeight;
-    const [strokeWidth, setStrokeWidth] = useState(5);
-    const [stroke, setStroke] = useState("black");
-    const [lines, setLines] = useState([]);
-    const isDrawing = useRef(false);
-
-    //Ref elements
-    const stageRef = useRef(null);
-    const stageElm = stageRef.current;
-
-    useEffect(() => {
-        onValue(refDB, (snapshot) => {
-            const data = snapshot.val();
-            setLines(data || []);
+class Index extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            stroke: "#000000",
+            strokeWidth: 5,
+            lines: []
+        }
+        this.stageRef = React.createRef();
+        this.refDB = ref(Database, "board");
+    }
+    changeMode = (mode) => {
+        this.stageRef.current.off("mousedown")
+        this.stageRef.current.on("mousedown", mode)
+    };
+    drawMode = () => {
+        const stageElm = this.stageRef.current;
+        const {stroke, strokeWidth} = this.state;
+        const stageCursorPos = stageElm.getPointerPosition();
+        const newLine = {
+            options: {stroke, strokeWidth},
+            points: [
+                stageCursorPos.x,
+                stageCursorPos.y,
+                stageCursorPos.x,
+                stageCursorPos.y
+            ]
+        }
+        this.setState({lines: [...this.state.lines, newLine]});
+        stageElm.on("mousemove touchmove", () => {
+            const pos = stageElm.getPointerPosition();
+            const lines = this.state.lines;
+            lines[lines.length - 1].points = lines[lines.length - 1].points.concat([pos.x, pos.y]);
+            this.setState({lines});
+        })
+        stageElm.on("mouseup touchend", async () => {
+            stageElm.off("mousemove touchmove");
+            stageElm.off("mouseup touchend");
+            const target = push(this.refDB).key;
+            await update(this.refDB, {[target]: newLine});
         });
-    }, []);
-
-    const handleMouseDown = () => {
-        isDrawing.current = true;
-        const pos = stageRef.current.getPointerPosition();
-        setLines([...lines, {options: {stroke, strokeWidth}, points: [pos.x, pos.y, pos.x, pos.y]}]);
     }
-    const handleMouseUp = async () => {
-        isDrawing.current = false;
-        await update(refDB, {...lines});
+    componentDidMount = () => {
+        get(this.refDB).then((snapshot) => {
+            this.setState({lines: Object.values(snapshot.val())});
+        });
+        onChildAdded(this.refDB, (snapshot) => {
+            const data = snapshot.val();
+            this.setState({lines: this.state.lines.concat([data])});
+            console.log(data);
+        });
+        this.changeMode(this.drawMode);
     }
-    const handleMouseMove = () => {
-        if (!isDrawing.current) return;
-        const point = stageElm.getPointerPosition();
-        let lastLine = lines[lines.length - 1];
-        lastLine.points = lastLine.points.concat([point.x, point.y]);
-        setLines(lines.concat());
-    }
-
-    return (
-        <div className="paper_container">
-            <div id="topBar">
-                <div id="logo_container">
-                    <h1>Logo</h1>
+    render = () => {
+        return (
+            <div className="paper_container">
+                <div id="topBar">
+                    <div id="logo_container">
+                        <h1>Logo</h1>
+                    </div>
+                    <h1 id="title">title</h1>
+                    <div id="participants_container">
+                        <p>00 người tham gia</p>
+                    </div>
                 </div>
-                <h1 id="title">title</h1>
-                <div id="participants_container">
-                    <p>00 người tham gia</p>
+
+                <div id="sideFunctions">
+                    <button id="undo">Undo</button>`
+                    <button id="clear">Clear</button>
+                    <input
+                        type={"number"}
+                        value={this.state.strokeWidth}
+                        onChange={(e) => this.setState({strokeWidth: parseInt(e.target.value)})}
+                    />
+                </div>
+
+                <ColorPicker color={this.state.stroke} setColor={(color) => this.setState({stroke: color})}/>
+
+                <div id="toolBar">
+                    <button id="select">Select </button>
+                    <button id="draw">Draw</button>
+                    <button id="rubber">Rubber</button>
+                    <button id="cursor">Cursor</button>
+                    <button id="note">Note</button>
+                    <button id="image">Image</button>
+                    <button id="text">Text</button>
+                </div>
+
+                <div id="canvasContainer">
+                    <Stage
+                        width={window.innerWidth / 1}
+                        height={window.innerHeight / 1}
+                        ref={this.stageRef}
+                    >
+                        <Layer>
+                            {
+                                this.state.lines.map((line, i) => (
+                                    <Line
+                                        key={"line" + i}
+                                        points={line.points}
+                                        stroke={line.options.stroke}
+                                        strokeWidth={line.options.strokeWidth}
+                                        tension={0.5}
+                                    />
+                            ))}
+                            <Transformer/>
+                        </Layer>
+                    </Stage>
+
                 </div>
             </div>
-
-            <div id="sideFunctions">
-                <button id="undo">Undo</button>
-                <button id="clear" onClick={async () => {await remove(refDB)}}>Clear</button>
-                <input
-                    type={"number"}
-                    value={strokeWidth}
-                    onChange={(e) => setStrokeWidth(parseInt(e.target.value))}
-                />
-            </div>
-
-            <ColorPicker color={stroke} setColor={setStroke}/>
-
-            <div id="toolBar">
-                <button id="select">Select </button>
-                <button id="draw">Draw</button>
-                <button id="rubber">Rubber</button>
-                <button id="cursor">Cursor</button>
-                <button id="note">Note</button>
-                <button id="image">Image</button>
-                <button id="text">Text</button>
-            </div>
-
-            <div id="canvasContainer">
-                <Stage
-                    width={WIDTH}
-                    height={HEIGHT}
-                    onMouseDown={handleMouseDown}
-                    onMousemove={handleMouseMove}
-                    onMouseUp={handleMouseUp}
-                    ref={stageRef}
-                >
-                    <Layer>
-                        {lines.map((line, i) => (
-                            <Line
-                                key={i}
-                                points={line.points}
-                                stroke={line.options.stroke}
-                                strokeWidth={line.options.strokeWidth}
-                                bezier={true}
-                                lineCap="round"
-                                lineJoin="round"
-                            />
-                        ))}
-                        <Transformer/>
-                    </Layer>
-                </Stage>
-
-            </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 export default Index;
