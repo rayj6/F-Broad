@@ -1,5 +1,7 @@
-import React, {useState, useRef} from "react";
-import {Stage, Layer, Line} from "react-konva";
+import React, { useState, useRef, useEffect } from "react";
+import { Stage, Layer, Line, Transformer } from "react-konva";
+import { onValue, update, ref, remove, onChildAdded } from "firebase/database";
+import { Database } from "../../firebase.config";
 
 import "./styles.css";
 
@@ -46,38 +48,41 @@ const ColorPicker = ({color, setColor}) => {
 };
 
 const Index = () => {
+    const refDB = ref(Database, "/board/")
     const WIDTH = window.innerWidth;
     const HEIGHT = window.innerHeight;
-    const [strokeWidth, setStrokeWidth] = useState(2);
+    const [strokeWidth, setStrokeWidth] = useState(5);
     const [stroke, setStroke] = useState("black");
     const [lines, setLines] = useState([]);
     const isDrawing = useRef(false);
 
-    const handleMouseDown = (e) => {
+    //Ref elements
+    const stageRef = useRef(null);
+    const stageElm = stageRef.current;
+
+    useEffect(() => {
+        onValue(refDB, (snapshot) => {
+            const data = snapshot.val();
+            setLines(data);
+        });
+    }, []);
+
+    const handleMouseDown = () => {
         isDrawing.current = true;
-        const pos = e.target.getStage().getPointerPosition();
-        setLines([...lines, {stroke, strokeWidth, points: [pos.x, pos.y]}]);
-    };
-
-    const handleMouseMove = (e) => {
-        // no drawing - skipping
-        if (!isDrawing.current) {
-            return;
-        }
-        const stage = e.target.getStage();
-        const point = stage.getPointerPosition();
-        let lastLine = lines[lines.length - 1];
-        // add point
-        lastLine.points = lastLine.points.concat([point.x, point.y]);
-
-        // replace last
-        lines.splice(lines.length - 1, 1, lastLine);
-        setLines(lines.concat());
-    };
-
-    const handleMouseUp = () => {
+        const pos = stageRef.current.getPointerPosition();
+        setLines([...lines, {options: {stroke, strokeWidth}, points: [pos.x, pos.y, pos.x, pos.y]}]);
+    }
+    const handleMouseUp = async () => {
         isDrawing.current = false;
-    };
+        await update(refDB, {...lines});
+    }
+    const handleMouseMove = () => {
+        if (!isDrawing.current) return;
+        const point = stageElm.getPointerPosition();
+        let lastLine = lines[lines.length - 1];
+        lastLine.points = lastLine.points.concat([point.x, point.y]);
+        setLines(lines.concat());
+    }
 
     return (
         <div className="paper_container">
@@ -93,7 +98,7 @@ const Index = () => {
 
             <div id="sideFunctions">
                 <button id="undo">Undo</button>
-                <button id="clear">Clear</button>
+                <button id="clear" onClick={async () => {await remove(refDB)}}>Clear</button>
                 <input
                     type={"number"}
                     value={strokeWidth}
@@ -104,36 +109,40 @@ const Index = () => {
             <ColorPicker color={stroke} setColor={setStroke}/>
 
             <div id="toolBar">
+                <button id="select">Select </button>
                 <button id="draw">Draw</button>
-                <button id="Rubber">Rubber</button>
-                <button id="Cursor">Cursor</button>
-                <button id="Note">Note</button>
-                <button id="Image">Image</button>
-                <button id="Text">Text</button>
+                <button id="rubber">Rubber</button>
+                <button id="cursor">Cursor</button>
+                <button id="note">Note</button>
+                <button id="image">Image</button>
+                <button id="text">Text</button>
             </div>
 
             <div id="canvasContainer">
                 <Stage
-                    width={window.innerWidth}
-                    height={window.innerHeight}
+                    width={WIDTH}
+                    height={HEIGHT}
                     onMouseDown={handleMouseDown}
                     onMousemove={handleMouseMove}
-                    onMouseup={handleMouseUp}
+                    onMouseUp={handleMouseUp}
+                    ref={stageRef}
                 >
                     <Layer>
                         {lines.map((line, i) => (
                             <Line
                                 key={i}
                                 points={line.points}
-                                stroke={line.stroke}
-                                strokeWidth={line.strokeWidth}
-                                tension={0.5}
+                                stroke={line.options.stroke}
+                                strokeWidth={line.options.strokeWidth}
+                                bezier={true}
                                 lineCap="round"
                                 lineJoin="round"
                             />
                         ))}
+                        <Transformer/>
                     </Layer>
                 </Stage>
+
             </div>
         </div>
     );
