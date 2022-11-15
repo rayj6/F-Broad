@@ -63,7 +63,7 @@ const Index = () => {
     useEffect(() => {
         onValue(refDB, (snapshot) => {
             const data = snapshot.val();
-            setLines(data);
+            setLines(data || []);
         });
     }, []);
 
