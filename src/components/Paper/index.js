@@ -1,12 +1,14 @@
 import React from "react";
-import {Stage, Layer, Line} from "react-konva";
+import {Stage, Layer, Line, Transformer} from "react-konva";
 import {
-    onChildAdded,
+    onValue,
     update,
     ref,
+    set,
     // remove,
     push,
-    get,
+    child,
+    // get,
 } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
 import { Auth, Database } from "../../firebase.config";
@@ -59,10 +61,11 @@ class Index extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedNode: [],
+            selectedElm: [],
             stroke: "#000000",
             strokeWidth: 5,
             lines: [],
+            currentLine: {},
             user: null,
         };
         this.stageRef = React.createRef();
@@ -78,18 +81,19 @@ class Index extends React.Component {
         this.textRef = React.createRef();
         this.refDB = ref(Database, "board");
     }
-
     changeMode = (mode) => {
         this.stageRef.current.off("mousedown");
         this.stageRef.current.on("mousedown", mode);
     };
-    drawMode = () => {
+    drawMode = async () => {
         const stageElm = this.stageRef.current;
         const {stroke, strokeWidth} = this.state;
         const stageCursorPos = stageElm.getPointerPosition();
-        const newLine = {
-            property: {
+        const currentLineKey = push(this.refDB).key;
+        const currentLineValue = {
+            properties: {
                 userId: this.state.user.uid,
+                lock: false,
             },
             options: {stroke, strokeWidth},
             points: [
@@ -97,77 +101,82 @@ class Index extends React.Component {
                 stageCursorPos.y,
                 stageCursorPos.x,
                 stageCursorPos.y,
-            ],
-        };
-        this.setState({lines: [...this.state.lines, newLine]});
+            ]
+        }
+        this.setState({currentLine: currentLineValue});
+
         stageElm.on("mousemove touchmove", () => {
             const pos = stageElm.getPointerPosition();
-            const lines = this.state.lines;
-            lines[lines.length - 1].points = lines[lines.length - 1].points.concat([
-                pos.x,
-                pos.y,
-            ]);
-            this.setState({lines});
+            let currentLine = this.state.currentLine;
+            if(currentLine.points === undefined) return;
+            currentLine.points = currentLine.points.concat([pos.x, pos.y]);
+            this.setState({currentLine});
         });
+
         stageElm.on("mouseup touchend", async () => {
-            stageElm.off("mousemove touchmove");
-            stageElm.off("mouseup touchend");
-            const target = push(this.refDB).key;
-            const lines = this.state.lines;
-            await update(this.refDB, {[target]: lines[lines.length - 1]});
+            stageElm.off("mousemove touchmove mouseup touchend");
+            await update(this.refDB, {[currentLineKey]: this.state.currentLine});
+            this.setState({currentLine: {}});
         });
     };
-    clearBoard = () => {
-        console.log(this.list.some((item) => item.lock === true));
-    }
     selectMode = (e) => {
         const lineElm = e.target;
         const lockElm = this.lockRef.current;
-        if(this.state.lines[lineElm.attrs.lineNumber] !== undefined){
-            lineElm.stroke("red");
-            this.setState({selectedNode: [...this.state.selectedNode, lineElm]});
+        if(lineElm.attrs.lineKey !== undefined){
+            lineElm.stroke("#ff0000");
+            console.log(this.state.selectedElm);
+            if(this.state.selectedElm.some((elm) => elm.attrs.lineKey === lineElm.attrs.lineKey)) return;
+            this.setState({selectedElm  : [...this.state.selectedElm, lineElm]});
+            lockElm.onclick = () => {
+                this.state.selectedElm.forEach(async (elm) => {
+                    elm.stroke("#000000");
+                    await update(child(child(this.refDB, elm.attrs.lineKey),"properties"), {lock: true});
+                })
+                this.setState({selectedElm: []});
+            }
         } else {
-            // console.log(this.state.selectedNode);
-            this.state.selectedNode.forEach((node) => {
-                console.log(node);
+            this.state.selectedElm.forEach((elm) => {
+                elm.stroke("#000000");
             })
+            this.setState({selectedElm: []});
         }
     };
+    clearBoard = async () => {
+        const lines = this.state.lines;
+        for(let key in lines){
+            if(lines[key].properties.lock === false){
+                lines[key] = null;
+            }
+        }
+        set(this.refDB, lines);
+    };
     componentDidMount = () => {
-        get(this.refDB).then((snapshot) => {
-            this.setState({lines: Object.values(snapshot.val() || {})});
+        //Event listener for elements
+        const selectElm = this.selectRef.current;
+        const drawElm = this.drawRef.current;
+        const clearElm = this.clearRef.current;
+        // console.log(selectElm);
+        selectElm.onclick = () => this.changeMode(this.selectMode)
+        drawElm.onclick = () => this.changeMode(this.drawMode)
+        clearElm.onclick = () => this.clearBoard();
+
+        //Event listener for firebase
+        onValue(this.refDB, (snapshot) => {
+            const data = snapshot.val() || {};
+            this.setState({lines: data} );
         });
-        onChildAdded(this.refDB, (snapshot) => {
-            const data = snapshot.val();
-            this.setState({lines: this.state.lines.concat([data])});
-        });
+
         onAuthStateChanged(Auth, (user) => {
-            if (user) {
+            if (user !== null) {
                 this.setState({user});
-                this.changeMode(this.selectMode);
+                this.changeMode(this.drawMode);
             } else {
                 window.location.href = "/";
             }
         });
-
-        // Add event listener
-        const selectElm = this.selectRef.current;
-        const drawElm = this.drawRef.current;
-        const eraserElm = this.eraserRef.current;
-        const cursorElm = this.cursorRef.current;
-        const lockElm = this.lockRef.current;
-        const imageElm = this.imageRef.current;
-        const textElm = this.textRef.current;
-        const clearElm = this.clearRef.current;
-        const undoElm = this.undoRef.current;
-        selectElm.addEventListener("click", () => this.changeMode(this.selectMode));
-        drawElm.addEventListener("click", () => this.changeMode(this.drawMode));
-        // eraserElm.addEventListener("click", () => this.changeMode(this.eraserMode));
-        // cursorElm.addEventListener("click", () => this.changeMode(this.cursorMode));
-        // lockElm.addEventListener("click", () => this.changeMode(this.lockMode));
-        // imageElm.addEventListener("click", () => this.changeMode(this.imageMode));
-        // textElm.addEventListener("click", () => this.changeMode(this.textMode));
-        clearElm.addEventListener("click", () => this.clearBoard());
+    };
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // if(prevState.lines !== this.state.lines) console.log(this.state.lines);
     }
     render = () => {
         return (
@@ -213,19 +222,34 @@ class Index extends React.Component {
                         ref={this.stageRef}
                     >
                         <Layer>
-                            {this.state.lines.map((line, i) => (
-                                <Line
-                                    lineNumber={i}
-                                    onClick={(e) => {
-                                        this.setState({selectedNode: [e.target]});
-                                    }}
-                                    key={"line" + i}
-                                    points={line.points}
-                                    stroke={line.options.stroke}
-                                    strokeWidth={line.options.strokeWidth}
-                                    tension={0.5}
-                                />
-                            ))}
+                            {/*{[...Object.values(this.state.lines), this.state.currentLine].map((line, i) => (*/}
+                            {/*    <Line*/}
+                            {/*        key={"line" + i}*/}
+                            {/*        points={line.points}*/}
+                            {/*        stroke={"#000000"}*/}
+                            {/*        strokeWidth={5}*/}
+                            {/*        tension={0.5}*/}
+                            {/*    />*/}
+                            {/*))}*/}
+                            {
+                                [...Object.entries(this.state.lines),
+                                    ["currentLine", this.state.currentLine]
+                                ].map(([key, value],i) => {
+                                return (
+                                    <Line
+                                        lineKey={key}
+                                        key={"line" + i}
+                                        points={value.points}
+                                        stroke={"#000000"}
+                                        strokeWidth={5}
+                                        tension={0.5}
+                                    />
+                                )
+                            })
+                            }
+                            <Transformer
+
+                            />
                         </Layer>
                     </Stage>
                 </div>

@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
-import Paper from "./components/Paper/index.js";
-import Login from "./components/Login/index.js";
+import Paper from "./components/Paper/index";
+import Login from "./components/Login/index";
 // import Register from "./components/Register/index.js";
 
 function App() {
