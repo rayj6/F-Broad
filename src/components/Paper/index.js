@@ -1,14 +1,14 @@
 import React from "react";
-import {Stage, Layer, Line, Transformer} from "react-konva";
+import {Stage, Layer, Line} from "react-konva";
 import {
     onChildAdded,
     update,
     ref,
-    remove,
+    // remove,
     push,
     get,
 } from "firebase/database";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { Auth, Database } from "../../firebase.config";
 
 import "./styles.css";
@@ -59,12 +59,23 @@ class Index extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            selectedNode: [],
             stroke: "#000000",
             strokeWidth: 5,
             lines: [],
             user: null,
         };
         this.stageRef = React.createRef();
+        this.clearRef = React.createRef();
+        this.undoRef = React.createRef();
+
+        this.selectRef = React.createRef();
+        this.drawRef = React.createRef();
+        this.eraserRef = React.createRef();
+        this.cursorRef = React.createRef();
+        this.lockRef = React.createRef();
+        this.imageRef = React.createRef();
+        this.textRef = React.createRef();
         this.refDB = ref(Database, "board");
     }
 
@@ -106,6 +117,22 @@ class Index extends React.Component {
             await update(this.refDB, {[target]: lines[lines.length - 1]});
         });
     };
+    clearBoard = () => {
+        console.log(this.list.some((item) => item.lock === true));
+    }
+    selectMode = (e) => {
+        const lineElm = e.target;
+        const lockElm = this.lockRef.current;
+        if(this.state.lines[lineElm.attrs.lineNumber] !== undefined){
+            lineElm.stroke("red");
+            this.setState({selectedNode: [...this.state.selectedNode, lineElm]});
+        } else {
+            // console.log(this.state.selectedNode);
+            this.state.selectedNode.forEach((node) => {
+                console.log(node);
+            })
+        }
+    };
     componentDidMount = () => {
         get(this.refDB).then((snapshot) => {
             this.setState({lines: Object.values(snapshot.val() || {})});
@@ -117,12 +144,31 @@ class Index extends React.Component {
         onAuthStateChanged(Auth, (user) => {
             if (user) {
                 this.setState({user});
-                this.changeMode(this.drawMode);
+                this.changeMode(this.selectMode);
             } else {
                 window.location.href = "/";
             }
         });
-    };
+
+        // Add event listener
+        const selectElm = this.selectRef.current;
+        const drawElm = this.drawRef.current;
+        const eraserElm = this.eraserRef.current;
+        const cursorElm = this.cursorRef.current;
+        const lockElm = this.lockRef.current;
+        const imageElm = this.imageRef.current;
+        const textElm = this.textRef.current;
+        const clearElm = this.clearRef.current;
+        const undoElm = this.undoRef.current;
+        selectElm.addEventListener("click", () => this.changeMode(this.selectMode));
+        drawElm.addEventListener("click", () => this.changeMode(this.drawMode));
+        // eraserElm.addEventListener("click", () => this.changeMode(this.eraserMode));
+        // cursorElm.addEventListener("click", () => this.changeMode(this.cursorMode));
+        // lockElm.addEventListener("click", () => this.changeMode(this.lockMode));
+        // imageElm.addEventListener("click", () => this.changeMode(this.imageMode));
+        // textElm.addEventListener("click", () => this.changeMode(this.textMode));
+        clearElm.addEventListener("click", () => this.clearBoard());
+    }
     render = () => {
         return (
             <div className="paper_container">
@@ -135,11 +181,10 @@ class Index extends React.Component {
                         <p>00 người tham gia</p>
                     </div>
                 </div>
-
                 <div id="sideFunctions">
-                    <button id="undo">Undo</button>
-                    `
-                    <button id="clear">Clear</button>
+                    <button ref={this.undoRef}>Undo</button>
+                    <button ref={this.clearRef}>Clear</button>
+                    <button ref={this.lockRef}>Lock</button>
                     <input
                         type={"number"}
                         value={this.state.strokeWidth}
@@ -148,25 +193,19 @@ class Index extends React.Component {
                         }
                     />
                 </div>
-
                 <ColorPicker
                     color={this.state.stroke}
                     setColor={(color) => this.setState({stroke: color})}
                 />
-
                 <div id="toolBar">
-                    <button id="select">Select</button>
-                    <button id="draw">Draw</button>
-                    <button id="eraser" onClick={() => {
-                    }}>
-                        eraser
-                    </button>
-                    <button id="cursor">Cursor</button>
+                    <button ref={this.selectRef}>Select</button>
+                    <button ref={this.drawRef}>Draw</button>
+                    <button ref={this.eraserRef}>Eraser</button>
+                    <button ref={this.cursorRef}>Cursor</button>
                     <button id="note">Note</button>
-                    <button id="image">Image</button>
-                    <button id="text">Text</button>
+                    <button ref={this.imageRef}>Image</button>
+                    <button ref={this.textRef}>Text</button>
                 </div>
-
                 <div id="canvasContainer">
                     <Stage
                         width={window.innerWidth / 1}
@@ -176,6 +215,10 @@ class Index extends React.Component {
                         <Layer>
                             {this.state.lines.map((line, i) => (
                                 <Line
+                                    lineNumber={i}
+                                    onClick={(e) => {
+                                        this.setState({selectedNode: [e.target]});
+                                    }}
                                     key={"line" + i}
                                     points={line.points}
                                     stroke={line.options.stroke}
@@ -183,7 +226,6 @@ class Index extends React.Component {
                                     tension={0.5}
                                 />
                             ))}
-                            <Transformer/>
                         </Layer>
                     </Stage>
                 </div>
