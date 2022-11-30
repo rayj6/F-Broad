@@ -1,4 +1,4 @@
-// Add support for tablet and mobile
+//Todo: Outline select line change
 
 import React from "react";
 import {Stage, Layer, Line, Rect} from "react-konva";
