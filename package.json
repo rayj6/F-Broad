@@ -23,6 +23,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+        "homepage": "http://rayj6.github.io/F-Broad",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
