@@ -1,6 +1,8 @@
 body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    cursor: url("../assets/board/mouse-active.svg"), auto;
 }
 
 p {
@@ -18,8 +20,6 @@ p {
 
     width: 100vw;
     height: 100vh;
-
-    background-color: #1f1f1f;
 }
 
 .titleContainer {
@@ -263,7 +263,6 @@ p {
 
 #selectFontSize {
     padding-left: 1%;
-
     width: 45%;
     height: 30%;
 
@@ -454,7 +453,7 @@ p {
 
 #functionBtn:hover {
     transition: background-color 0.5s;
-    background-color: #ff784f;
+    background-color: #ff784f66;
 }
 
 #functionBtn img {
@@ -494,4 +493,11 @@ p {
 
 #counter {
     font-size: calc(100vw / 100);
+}
+
+#drawingCanvas {
+    width: 100%;
+    height: 100%;
+
+    background-color: #1f1f1f;
 }

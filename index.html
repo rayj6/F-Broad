@@ -11,7 +11,9 @@
         <title>F-Broad</title>
     </head>
     <body>
-        <div class="canvasContainer"></div>
+        <div class="canvasContainer">
+            <canvas id="drawingCanvas"></canvas>
+        </div>
 
         <div class="titleContainer">
             <p id="title">Title</p>
@@ -21,7 +23,7 @@
             <div id="controlHeader">
                 <p>SETTINGS</p>
                 <div id="menuIconContainer">
-                    <img src="./assets/board/menu.png" onclick="toggleControlContainer()" />
+                    <img src="./assets/board/menu.png" onclick="handleControlContainerStatus()" />
                 </div>
             </div>
             <div id="themeContainer">
@@ -100,34 +102,34 @@
 
         <div class="functionContainer">
             <div id="functionBtn">
-                <img src="./assets/board/mouse.png" />
+                <img id="mouse" src="./assets/board/mouse.png" alt="Mouse" onclick="changeCursorToMouse()" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/pen.png" />
+                <img id="pen" src="./assets/board/pen.png" alt="Pen" onclick="initializeDrawing()" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/brush.png" />
+                <img id="brush" src="./assets/board/brush.png" alt="Brush" onclick="changeCursorToBrush()" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/text.png" />
+                <img id="text" src="./assets/board/text.png" alt="Text" onclick="changeCursorToText()" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/eraser.png" />
+                <img id="eraser" src="./assets/board/eraser.png" alt="Eraser" onclick="initializeEraser()" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/math.png" />
+                <img id="math" src="./assets/board/math.png" alt="Math" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/arrow.png" />
+                <img id="arrow" src="./assets/board/arrow.png" alt="Arrow" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/image.png" />
+                <img id="image" src="./assets/board/image.png" alt="Image" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/note.png" />
+                <img id="note" src="./assets/board/note.png" alt="Note" />
             </div>
             <div id="functionBtn">
-                <img src="./assets/board/bin.png" />
+                <img id="bin" src="./assets/board/bin.png" alt="Bin" />
             </div>
         </div>
 
@@ -138,6 +140,8 @@
             <p id="counter">00 người đã tham gia</p>
         </div>
 
-        <script src="./index.js"></script>
+        <script src="./functions/HandleChangeStatus.js"></script>
+        <script src="./functions/Draw.js"></script>
+        <script src="./functions/Erase.js"></script>
     </body>
 </html>
