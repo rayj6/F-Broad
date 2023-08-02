@@ -12,10 +12,92 @@
     </head>
     <body>
         <div class="canvasContainer"></div>
+
         <div class="titleContainer">
             <p id="title">Title</p>
         </div>
-        <div class="controlContainer-active"></div>
+
+        <div class="controlContainer-active">
+            <div id="controlHeader">
+                <p>SETTINGS</p>
+                <div id="menuIconContainer">
+                    <img src="./assets/board/menu.png" />
+                </div>
+            </div>
+            <div id="themeContainer">
+                <p>Theme</p>
+                <div id="themeSelector"></div>
+            </div>
+            <div id="textContainer">
+                <p>Text</p>
+                <div id="textSettings">
+                    <select id="selectFont">
+                        <option value="option1">Arial</option>
+                        <option value="option2" selected>Time new roman</option>
+                        <option value="option3">Comfotaa</option>
+                    </select>
+
+                    <div id="WeightAndSize">
+                        <select id="selectFontWeight">
+                            <option value="option1">Light</option>
+                            <option value="option2" selected>Normal</option>
+                            <option value="option3">Bold</option>
+                        </select>
+
+                        <select id="selectFontSize">
+                            <option value="option1">2</option>
+                            <option value="option2" selected>4</option>
+                            <option value="option3">6</option>
+                            <option value="option3">8</option>
+                            <option value="option3">10</option>
+                            <option value="option3">12</option>
+                            <option value="option3">14</option>
+                            <option value="option3">16</option>
+                            <option value="option3">18</option>
+                            <option value="option3">20</option>
+                        </select>
+                    </div>
+
+                    <div id="selectColor">
+                        <button id="white"></button>
+                        <button id="orange"></button>
+                        <button id="purple"></button>
+                        <button id="yellow"></button>
+                        <button id="green"></button>
+                    </div>
+                </div>
+            </div>
+            <div id="shapeContainer">
+                <p>Shape</p>
+                <div id="shapeSettings">
+                    <div id="selectStroke">
+                        <p>Stroke</p>
+                        <select id="selectStrokeSize">
+                            <option value="option1">2</option>
+                            <option value="option2" selected>4</option>
+                            <option value="option3">6</option>
+                            <option value="option3">8</option>
+                            <option value="option3">10</option>
+                            <option value="option3">12</option>
+                            <option value="option3">14</option>
+                            <option value="option3">16</option>
+                            <option value="option3">18</option>
+                            <option value="option3">20</option>
+                        </select>
+                    </div>
+                    <div id="selectColor">
+                        <button id="white"></button>
+                        <button id="orange"></button>
+                        <button id="purple"></button>
+                        <button id="yellow"></button>
+                        <button id="green"></button>
+                    </div>
+                </div>
+            </div>
+
+            <button id="keepOpen">Keep Open</button>
+        </div>
+
         <div class="functionContainer">
             <div id="functionBtn"></div>
             <div id="functionBtn"></div>
@@ -27,6 +109,13 @@
             <div id="functionBtn"></div>
             <div id="functionBtn"></div>
             <div id="functionBtn"></div>
+        </div>
+
+        <div class="userControlContainer">
+            <div id="iconContainer">
+                <img src="./assets/board/counter.png" />
+            </div>
+            <p id="counter">00 người đã tham gia</p>
         </div>
     </body>
 </html>
