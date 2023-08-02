@@ -17,11 +17,11 @@
             <p id="title">Title</p>
         </div>
 
-        <div class="controlContainer-active">
+        <div class="controlContainer controlContainer-inactive">
             <div id="controlHeader">
                 <p>SETTINGS</p>
                 <div id="menuIconContainer">
-                    <img src="./assets/board/menu.png" />
+                    <img src="./assets/board/menu.png" onclick="toggleControlContainer()" />
                 </div>
             </div>
             <div id="themeContainer">
@@ -99,16 +99,36 @@
         </div>
 
         <div class="functionContainer">
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
-            <div id="functionBtn"></div>
+            <div id="functionBtn">
+                <img src="./assets/board/mouse.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/pen.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/brush.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/text.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/eraser.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/math.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/arrow.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/image.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/note.png" />
+            </div>
+            <div id="functionBtn">
+                <img src="./assets/board/bin.png" />
+            </div>
         </div>
 
         <div class="userControlContainer">
@@ -117,5 +137,7 @@
             </div>
             <p id="counter">00 người đã tham gia</p>
         </div>
+
+        <script src="./index.js"></script>
     </body>
 </html>

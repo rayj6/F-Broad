@@ -48,7 +48,70 @@ p {
     user-select: none;
 }
 
+.controlContainer-inactive {
+    cursor: pointer;
+
+    position: absolute;
+    top: calc(100vw / 50);
+    right: calc(100vw / 50);
+
+    width: calc(100vw / 35);
+    height: calc(100vw / 35);
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #2b64f1;
+    border-radius: calc(100vw / 2);
+
+    transition: width 200ms, height 200ms, background-color 800ms;
+}
+
+.controlContainer-inactive #controlHeader p {
+    visibility: hidden;
+}
+
+.controlContainer-inactive #controlHeader {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #000; */
+}
+
+.controlContainer-inactive #menuIconContainer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: calc(100vw / 35);
+    height: calc(100vw / 35);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controlContainer-inactive #themeContainer {
+    visibility: hidden;
+}
+
+.controlContainer-inactive #textContainer {
+    visibility: hidden;
+}
+
+.controlContainer-inactive #shapeContainer {
+    visibility: hidden;
+}
+
+.controlContainer-inactive button {
+    visibility: hidden;
+}
+
 .controlContainer-active {
+    transition: width 500ms, height 500ms;
+
     position: absolute;
     top: calc(100vw / 50);
     right: calc(100vw / 50);
@@ -93,6 +156,8 @@ p {
 }
 
 #menuIconContainer img {
+    user-select: none;
+
     width: 50%;
     height: 50%;
 }
@@ -343,6 +408,8 @@ p {
     background-color: #1f1f1f;
     color: #d9d9d9;
 
+    font-size: calc(100vw / 120);
+
     border: none;
     border-radius: calc(100vw / 100);
 }
@@ -376,6 +443,10 @@ p {
     margin-left: 0.5%;
     margin-right: 0.5%;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background-color: transparent;
     border-radius: calc(100vw / 100);
     transition: background-color 0.5s;
@@ -384,6 +455,11 @@ p {
 #functionBtn:hover {
     transition: background-color 0.5s;
     background-color: #ff784f;
+}
+
+#functionBtn img {
+    width: 50%;
+    height: auto;
 }
 
 .userControlContainer {
