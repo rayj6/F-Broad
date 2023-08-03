@@ -12,7 +12,7 @@
     </head>
     <body>
         <div class="canvasContainer">
-            <canvas id="drawingCanvas"></canvas>
+            <canvas id=""></canvas>
         </div>
 
         <div class="titleContainer">
@@ -105,7 +105,7 @@
                 <img id="mouse" src="./assets/board/mouse.png" alt="Mouse" onclick="changeCursorToMouse()" />
             </div>
             <div id="functionBtn">
-                <img id="pen" src="./assets/board/pen.png" alt="Pen" onclick="initializeDrawing()" />
+                <img id="pen" src="./assets/board/pen.png" alt="Pen" onclick="toggleDraw()" />
             </div>
             <div id="functionBtn">
                 <img id="brush" src="./assets/board/brush.png" alt="Brush" onclick="changeCursorToBrush()" />
@@ -114,7 +114,7 @@
                 <img id="text" src="./assets/board/text.png" alt="Text" onclick="changeCursorToText()" />
             </div>
             <div id="functionBtn">
-                <img id="eraser" src="./assets/board/eraser.png" alt="Eraser" onclick="initializeEraser()" />
+                <img id="eraser" src="./assets/board/eraser.png" alt="Eraser" onclick="toggleErase()" />
             </div>
             <div id="functionBtn">
                 <img id="math" src="./assets/board/math.png" alt="Math" />
@@ -142,6 +142,5 @@
 
         <script src="./functions/HandleChangeStatus.js"></script>
         <script src="./functions/Draw.js"></script>
-        <script src="./functions/Erase.js"></script>
     </body>
 </html>
