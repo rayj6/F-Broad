@@ -13,6 +13,26 @@ p {
     line-height: normal;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 .canvasContainer {
     position: absolute;
     top: 0;
@@ -500,4 +520,51 @@ p {
     height: 100%;
 
     background-color: #1f1f1f;
+}
+
+.addTextContainer {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+
+    width: 15vw;
+    height: 15vh;
+
+    display: flex;
+    flex-direction: column;
+
+    /* background-color: #d9d9d9; */
+}
+
+.addTextContainer textarea {
+    padding: 2%;
+
+    width: 95%;
+    height: 60%;
+
+    resize: none;
+    outline: none;
+
+    background-color: transparent;
+    color: #d9d9d9;
+
+    border: 1px solid #d9d9d9;
+    border-radius: calc(100vw / 150);
+}
+
+.addTextContainer button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    border: 0;
+
+    width: 50%;
+    height: 20%;
+
+    background-color: transparent;
+    color: #d9d9d9;
+
+    border: 1px solid #d9d9d9;
+    border-radius: calc(100vw / 150);
 }

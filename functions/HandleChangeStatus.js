@@ -13,14 +13,6 @@ function handleControlContainerStatus() {
     }
 }
 
-function changeCursorToMouse() {
-    document.body.style.cursor = 'url("../assets/board/mouse-active.svg"), auto';
-}
-
 function changeCursorToBrush() {
     document.body.style.cursor = 'url("../assets/board/brush-active.svg"), auto';
-}
-
-function changeCursorToText() {
-    document.body.style.cursor = "text";
 }

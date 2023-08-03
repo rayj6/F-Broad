@@ -15,6 +15,11 @@
             <canvas id="drawingCanvas"></canvas>
         </div>
 
+        <div class="addTextContainer">
+            <textarea id="textInput" placeholder="Enter custom text..."></textarea>
+            <button id="addTextButton" onclick="addCustomText()">Add Text</button>
+        </div>
+
         <div class="titleContainer">
             <p id="title">Title</p>
         </div>
@@ -102,7 +107,7 @@
 
         <div class="functionContainer">
             <div id="functionBtn">
-                <img id="mouse" src="./assets/board/mouse.png" alt="Mouse" onclick="changeCursorToMouse()" />
+                <img id="mouse" src="./assets/board/mouse.png" alt="Mouse" onclick="toggleMouse()" />
             </div>
             <div id="functionBtn">
                 <img id="pen" src="./assets/board/pen.png" alt="Pen" onclick="toggleDraw()" />
@@ -111,7 +116,7 @@
                 <img id="brush" src="./assets/board/brush.png" alt="Brush" onclick="changeCursorToBrush()" />
             </div>
             <div id="functionBtn">
-                <img id="text" src="./assets/board/text.png" alt="Text" onclick="changeCursorToText()" />
+                <img id="text" src="./assets/board/text.png" alt="Text" onclick="toggleGetMouseLocation()" />
             </div>
             <div id="functionBtn">
                 <img id="eraser" src="./assets/board/eraser.png" alt="Eraser" onclick="toggleErase()" />
@@ -129,7 +134,7 @@
                 <img id="note" src="./assets/board/note.png" alt="Note" />
             </div>
             <div id="functionBtn">
-                <img id="bin" src="./assets/board/bin.png" alt="Bin" />
+                <img id="bin" src="./assets/board/bin.png" alt="Bin" onclick="clearCanvas()" />
             </div>
         </div>
 
@@ -142,5 +147,6 @@
 
         <script src="./functions/HandleChangeStatus.js"></script>
         <script src="./functions/Draw.js"></script>
+        <script src="./functions/AddText.js"></script>
     </body>
 </html>
