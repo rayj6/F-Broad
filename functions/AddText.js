@@ -1,9 +1,10 @@
 let x = 0;
 let y = 0;
 
-function toggleGetMouseLocation() {
+function toggleText() {
     document.body.style.cursor = "default";
     window.addEventListener("mousemove", getMouseLocation);
+    return;
 }
 
 function moveObject(x, y) {
