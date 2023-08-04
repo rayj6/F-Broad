@@ -568,3 +568,85 @@ p {
     border: 1px solid #d9d9d9;
     border-radius: calc(100vw / 150);
 }
+
+.EmoBox {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+
+    width: calc(100vw / 6);
+    height: calc(100vw / 4);
+
+    background-color: #d9d9d9;
+    /* border: 1px solid #d9d9d9; */
+    border-radius: calc(100vw / 150);
+}
+
+.EmoBox #title {
+    margin-left: calc(100vw / 120);
+    font-size: calc(100vw / 120);
+    color: #1f1f1f;
+}
+
+#emoContainer {
+    /* margin-top: calc(100vw / -10); */
+
+    width: 95%;
+    height: 12%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    /* background-color: #fff; */
+}
+
+#emoContainer p {
+    cursor: pointer;
+    user-select: none;
+    font-family: "Roboto", sans-serif;
+    font-size: calc(100vw / 70);
+}
+
+#comment {
+    margin-left: calc(100vw / 120);
+    padding: 2%;
+
+    width: 85%;
+    height: 50%;
+
+    resize: none;
+    outline: none;
+
+    font-size: calc(100vw / 110);
+
+    background-color: transparent;
+    color: #1f1f1f;
+
+    border: 1px solid #1f1f1f;
+    border-radius: calc(100vw / 150);
+}
+
+#comment::placeholder {
+    color: #1f1f1f;
+}
+
+#addComment {
+    cursor: pointer;
+
+    position: absolute;
+    bottom: calc(100vw / 120);
+    right: calc(100vw / 110);
+
+    width: 30%;
+    height: 7%;
+
+    font-size: calc(100vw / 110);
+
+    background-color: transparent;
+    color: #1f1f1f;
+
+    border: 1px solid #1f1f1f;
+    border-radius: calc(100vw / 150);
+}

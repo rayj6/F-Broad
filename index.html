@@ -8,11 +8,28 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Roboto:ital,wght@1,300&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Roboto:wght@500&display=swap" rel="stylesheet" />
         <title>F-Broad</title>
     </head>
     <body>
         <div class="canvasContainer">
             <canvas id="drawingCanvas"></canvas>
+        </div>
+
+        <div class="EmoBox">
+            <p id="title">Emotion</p>
+            <div id="emoContainer">
+                <p id="emo" onclick="addEmo()">👍</p>
+                <p id="emo" onclick="addEmo()">👎</p>
+                <p id="emo" onclick="addEmo()">🤩</p>
+                <p id="emo" onclick="addEmo()">😢</p>
+                <p id="emo" onclick="addEmo()">❤️</p>
+            </div>
+            <p id="title">Comment</p>
+            <textarea id="comment" placeholder="Enter custom text..."></textarea>
+            <button id="addComment" onclick="addCustomText()">Add</button>
         </div>
 
         <div class="addTextContainer">
@@ -148,5 +165,6 @@
         <script src="./functions/HandleChangeStatus.js"></script>
         <script src="./functions/Draw.js"></script>
         <script src="./functions/AddText.js"></script>
+        <script src="./functions/EmotionAndComment.js"></script>
     </body>
 </html>
