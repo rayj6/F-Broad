@@ -2,28 +2,26 @@ let x = 0;
 let y = 0;
 
 function toggleText() {
-    document.body.style.cursor = "default";
     window.addEventListener("mousemove", getMouseLocation);
-    return;
-}
-
-function moveObject(x, y) {
-    const myObject = document.querySelector(".addTextContainer");
-    const currentTop = parseInt(myObject.style.top, 10) || 0;
-    const currentLeft = parseInt(myObject.style.left, 10) || 0;
-
-    // Update the object's position
-    myObject.style.top = y + "px";
-    myObject.style.left = x + "px";
 }
 
 function getMouseLocation(event) {
+    document.body.style.cursor = "default";
     const mouseX = event.clientX;
     const mouseY = event.clientY;
     // console.log("Mouse X:", mouseX, "Mouse Y:", mouseY);
     moveObject(mouseX, mouseY);
+
     x = mouseX;
     y = mouseY;
+}
+
+function moveObject(x, y) {
+    const myObject = document.querySelector(".addTextContainer");
+
+    // Update the object's position
+    myObject.style.top = y + "px";
+    myObject.style.left = x + "px";
 
     window.addEventListener("click", () => {
         window.removeEventListener("mousemove", getMouseLocation);
