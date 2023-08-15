@@ -4,6 +4,27 @@ let isDrawing = false;
 let isErasing = false;
 let isMouseDisabled = false;
 
+// Get the elements
+const selectStrokeSize = document.getElementById("selectStrokeSize");
+const selectColorButtons = document.querySelectorAll("#selectColor button");
+
+// Set initial values
+let brushColor = "#d9d9d9";
+let brushSize = parseInt(selectStrokeSize.value);
+
+// Add event listener to stroke size dropdown
+selectStrokeSize.addEventListener("change", (event) => {
+    brushSize = parseInt(event.target.value);
+    console.log("Brush Size:", brushSize);
+});
+
+// Add event listeners to color buttons
+selectColorButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+        brushColor = getComputedStyle(event.target).backgroundColor;
+    });
+});
+
 function toggleDraw() {
     isDrawing = !isDrawing;
     isErasing = false;
@@ -27,9 +48,9 @@ function toggleMouse() {
 
 function draw(event) {
     if (isDrawing && !isMouseDisabled) {
-        context.lineWidth = 15;
+        context.lineWidth = brushSize;
         context.lineCap = "round";
-        context.strokeStyle = "#d9d9d9";
+        context.strokeStyle = brushColor;
         context.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
         context.stroke();
         context.beginPath();
