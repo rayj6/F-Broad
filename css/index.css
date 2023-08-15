@@ -621,7 +621,7 @@ p {
     border-radius: calc(100vw / 150);
 }
 
-.EmoBox #title {
+.EmoBox .title {
     margin-left: calc(100vw / 120);
     font-size: calc(100vw / 120);
     color: #1f1f1f;

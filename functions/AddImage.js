@@ -10,6 +10,6 @@ function handleImageUpload(event) {
 
     image.onload = function () {
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        URL.revokeObjectURL(image.src); // Clean up object URL to release memory
+        URL.revokeObjectURL(image.src);
     };
 }

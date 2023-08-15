@@ -19,18 +19,19 @@
         </div>
 
         <div class="EmoBox">
-            <p id="title">Emotion</p>
+            <p class="title">Emotion</p>
             <div id="emoContainer">
-                <p id="emo" onclick="addEmo()">👍</p>
-                <p id="emo" onclick="addEmo()">👎</p>
-                <p id="emo" onclick="addEmo()">🤩</p>
-                <p id="emo" onclick="addEmo()">😢</p>
-                <p id="emo" onclick="addEmo()">❤️</p>
+                <p class="emo" onclick="addEmo('👍')">👍</p>
+                <p class="emo" onclick="addEmo('👎')">👎</p>
+                <p class="emo" onclick="addEmo('🤩')">🤩</p>
+                <p class="emo" onclick="addEmo('😢')">😢</p>
+                <p class="emo" onclick="addEmo('❤️')">❤️</p>
             </div>
-            <p id="title">Comment</p>
+            <p class="title">Comment</p>
             <textarea id="comment" placeholder="Enter custom text..."></textarea>
             <button id="addComment" onclick="addCustomText()">Add</button>
         </div>
+        <canvas id="drawingCanvas"></canvas>
 
         <div class="addTextContainer">
             <textarea id="textInput" placeholder="Enter custom text..."></textarea>
@@ -168,5 +169,6 @@
         <script src="./functions/AddText.js"></script>
         <script src="./functions/EmotionAndComment.js"></script>
         <script src="./functions/AddImage.js"></script>
+        <script src="./functions/AddArrow.js"></script>
     </body>
 </html>
