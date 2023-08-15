@@ -12,7 +12,3 @@ function handleControlContainerStatus() {
         controlContainer.classList.add("controlContainer-inactive");
     }
 }
-
-function changeCursorToBrush() {
-    document.body.style.cursor = 'url("../assets/board/brush-active.svg"), auto';
-}

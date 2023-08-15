@@ -28,6 +28,7 @@ function toggleDraw() {
     isDrawing = !isDrawing;
     isErasing = false;
     isMouseDisabled = false;
+    context.lineCap = "round";
     document.body.style.cursor = 'url("../assets/board/pen-active.svg") 5 35, auto';
 }
 
@@ -35,20 +36,29 @@ function toggleErase() {
     isErasing = !isErasing;
     isDrawing = false;
     isMouseDisabled = false;
+    context.lineCap = "round";
     document.body.style.cursor = 'url("../assets/board/eraser-active.svg") 5 35, auto';
+}
+
+function toggleBrush() {
+    isDrawing = false;
+    isErasing = false;
+    isMouseDisabled = false;
+    context.lineCap = "butt";
+    document.body.style.cursor = 'url("../assets/board/brush-active.svg") 5 35, auto';
 }
 
 function toggleMouse() {
     isMouseDisabled = !isMouseDisabled;
     isDrawing = false;
     isErasing = false;
+    context.lineCap = "round";
     document.body.style.cursor = 'url("../assets/board/mouse-active.svg") 5 35, auto';
 }
 
 function draw(event) {
-    if (isDrawing && !isMouseDisabled) {
+    if ((isDrawing || context.lineCap === "butt") && !isMouseDisabled) {
         context.lineWidth = brushSize;
-        context.lineCap = "round";
         context.strokeStyle = brushColor;
         context.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
         context.stroke();
@@ -60,7 +70,6 @@ function draw(event) {
 function erase(event) {
     if (isErasing && !isMouseDisabled) {
         context.lineWidth = 25;
-        context.lineCap = "round";
         context.strokeStyle = "#1f1f1f";
         context.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
         context.stroke();
@@ -76,7 +85,7 @@ function clearCanvas() {
 canvas.addEventListener("mousedown", (event) => {
     context.beginPath();
     context.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-    if (isDrawing) {
+    if (isDrawing || context.lineCap === "butt") {
         canvas.addEventListener("mousemove", draw);
     } else if (isErasing) {
         canvas.addEventListener("mousemove", erase);
