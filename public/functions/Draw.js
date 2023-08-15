@@ -2,7 +2,8 @@ let canvas = document.getElementById("drawingCanvas");
 let context = canvas.getContext("2d");
 let isDrawing = false;
 let isErasing = false;
-let isMouseDisabled = false;
+let isBrushing = false;
+let isMouseDisabled = true;
 
 // Get the elements
 const selectStrokeSize = document.getElementById("selectStrokeSize");
@@ -27,31 +28,35 @@ selectColorButtons.forEach((button) => {
 function toggleDraw() {
     isDrawing = !isDrawing;
     isErasing = false;
-    isMouseDisabled = false;
+    isBrushing = false;
+    isMouseDisabled = !isDrawing; // Toggle mouse based on drawing status
     context.lineCap = "round";
-    document.body.style.cursor = 'url("../assets/board/pen-active.svg") 5 35, auto';
+    document.body.style.cursor = isDrawing ? 'url("../assets/board/pen-active.svg") 5 35, auto' : 'url("../assets/board/mouse-active.svg") 5 35, auto';
 }
 
 function toggleErase() {
     isErasing = !isErasing;
     isDrawing = false;
-    isMouseDisabled = false;
+    isBrushing = false;
+    isMouseDisabled = !isErasing; // Toggle mouse based on erasing status
     context.lineCap = "round";
-    document.body.style.cursor = 'url("../assets/board/eraser-active.svg") 5 35, auto';
+    document.body.style.cursor = isErasing ? 'url("../assets/board/eraser-active.svg") 5 35, auto' : 'url("../assets/board/mouse-active.svg") 5 35, auto';
 }
 
 function toggleBrush() {
+    isBrushing = !isBrushing;
     isDrawing = false;
     isErasing = false;
-    isMouseDisabled = false;
+    isMouseDisabled = !isBrushing; // Toggle mouse based on brushing status
     context.lineCap = "butt";
-    document.body.style.cursor = 'url("../assets/board/brush-active.svg") 5 35, auto';
+    document.body.style.cursor = isBrushing ? 'url("../assets/board/brush-active.svg") 5 35, auto' : 'url("../assets/board/mouse-active.svg") 5 35, auto';
 }
 
 function toggleMouse() {
-    isMouseDisabled = !isMouseDisabled;
+    isMouseDisabled = false;
     isDrawing = false;
     isErasing = false;
+    isBrushing = false;
     context.lineCap = "round";
     document.body.style.cursor = 'url("../assets/board/mouse-active.svg") 5 35, auto';
 }
