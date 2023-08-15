@@ -33,7 +33,6 @@ function moveEmoBox(x, y) {
 }
 
 function addEmo(emoji) {
-    console.log(emoji);
     const text = emoji;
 
     context.font = "20px Arial";

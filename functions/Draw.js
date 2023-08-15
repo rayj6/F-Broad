@@ -15,7 +15,6 @@ let brushSize = parseInt(selectStrokeSize.value);
 // Add event listener to stroke size dropdown
 selectStrokeSize.addEventListener("change", (event) => {
     brushSize = parseInt(event.target.value);
-    console.log("Brush Size:", brushSize);
 });
 
 // Add event listeners to color buttons
