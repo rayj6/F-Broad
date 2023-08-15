@@ -20,6 +20,18 @@ function handleMoveEmoBox(x, y) {
     myObject.style.left = x + "px";
 }
 
+function moveEmoBox(x, y) {
+    const myObject = document.querySelector(".EmoBox");
+
+    // Update the object's position
+    myObject.style.top = y + "px";
+    myObject.style.left = x + "px";
+
+    window.addEventListener("click", () => {
+        window.removeEventListener("mousemove", getMouseLocation);
+    });
+}
+
 function addEmo(emoji) {
     console.log(emoji);
     const text = emoji;
@@ -32,12 +44,34 @@ function addEmo(emoji) {
     let currentY = initialY;
 
     for (let i = 0; i < lines.length; i++) {
-        context.fillText(lines[i], a - 8, b - 10);
+        context.fillText(lines[i], a - 40, b - 10);
         currentY += lineHeight;
     }
 
     textInput.value = ""; // Clear the input after adding text to the canvas
-    moveObject(-1000, -1000);
+
+    toggleMouse();
+}
+
+function addComment() {
+    const text = document.getElementById("comment").value;
+
+    if (text.trim() !== "") {
+        context.font = "20px Arial";
+        context.fillStyle = "#fff";
+        const lines = text.split("\n");
+        const lineHeight = 25; // Adjust this value based on your preference
+        const initialY = 50; // Adjust this value to change the initial y-coordinate of the text
+        let currentY = initialY;
+
+        for (let i = 0; i < lines.length; i++) {
+            context.fillText(lines[i], a - 8, b - 10);
+            currentY += lineHeight;
+        }
+
+        textInput.value = ""; // Clear the input after adding text to the canvas
+        moveEmoBox(-1000, -1000);
+    }
 
     toggleMouse();
 }
