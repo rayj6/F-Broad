@@ -85,10 +85,14 @@ function clearCanvas() {
 canvas.addEventListener("mousedown", (event) => {
     context.beginPath();
     context.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-    if (isDrawing || context.lineCap === "butt") {
+
+    if (isDrawing) {
         canvas.addEventListener("mousemove", draw);
     } else if (isErasing) {
         canvas.addEventListener("mousemove", erase);
+    } else if (context.lineCap === "butt") {
+        // Check if the brush mode is active
+        canvas.addEventListener("mousemove", draw); // Use the same draw function for brush
     }
 });
 
