@@ -10,7 +10,7 @@ document.getElementById("drawingCanvas").addEventListener("contextmenu", (event)
     a = mouseX;
     b = mouseY;
 
-    console.log("rightclick on position x = " + mouseX + " y = " + mouseY);
+    // console.log("rightclick on position x = " + mouseX + " y = " + mouseY);
     handleMoveEmoBox(mouseX, mouseY);
 });
 
