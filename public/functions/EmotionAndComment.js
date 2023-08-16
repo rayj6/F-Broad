@@ -26,10 +26,6 @@ function moveEmoBox(x, y) {
     // Update the object's position
     myObject.style.top = y + "px";
     myObject.style.left = x + "px";
-
-    window.addEventListener("click", () => {
-        window.removeEventListener("mousemove", getMouseLocation);
-    });
 }
 
 function addEmo(emoji) {
